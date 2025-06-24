@@ -10,7 +10,7 @@ document.addEventListener('DOMContentLoaded', () => {
     const expirationInputs = document.getElementById('expirationInputs');
 
     // আপনার হোস্ট করা ব্যাকএন্ড সার্ভারের সঠিক URL
-    const backendApiUrl = 'https://devil-x-url-shortener-backend.onrender.com/api/create';
+    const backendApiUrl = 'https://devil-x.onrender.com/api/create';
 
     // ড্রপডাউন পরিবর্তনের জন্য ইভেন্ট লিসেনার
     expirationUnit.addEventListener('change', () => {
