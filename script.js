@@ -1,110 +1,110 @@
-// script.js এর শুরুতে যোগ করুন
-const expirationUnit = document.getElementById('expirationUnit');
-const expirationInputs = document.getElementById('expirationInputs');
+// --- script.js ফাইলের নতুন এবং সঠিক কোড ---
 
-expirationUnit.addEventListener('change', () => {
-    const unit = expirationUnit.value;
-    expirationInputs.innerHTML = ''; // আগের ইনপুট মুছে দিন
+document.addEventListener('DOMContentLoaded', () => {
+    // প্রয়োজনীয় সব HTML এলিমেন্টগুলোকে একবারেই নিয়ে নেওয়া
+    const generateBtn = document.getElementById('generateBtn');
+    const longUrlInput = document.getElementById('longUrl');
+    const customNameInput = document.getElementById('customName');
+    const resultContainer = document.getElementById('result');
+    const expirationUnit = document.getElementById('expirationUnit');
+    const expirationInputs = document.getElementById('expirationInputs');
 
-    if (unit === 'hours') {
-        expirationInputs.innerHTML = '<input type="number" id="expirationValue" placeholder="Enter Hours (1-24)">';
-    } else if (unit === 'date') {
-        expirationInputs.innerHTML = '<input type="date" id="expirationValue">';
-    }
-});
-
-
-
-document.getElementById('generateBtn').addEventListener('click', async () => {
-    const longUrl = document.getElementById('longUrl').value;
-    const customName = document.getElementById('customName').value;
-    const resultDiv = document.getElementById('result');
-
-    // আপনার হোস্ট করা ব্যাকএন্ড সার্ভারের URL
+    // আপনার হোস্ট করা ব্যাকএন্ড সার্ভারের সঠিক URL
     const backendApiUrl = 'https://devil-x-url-shortener-backend.onrender.com/api/create';
 
-    if (!longUrl) {
-        resultDiv.innerHTML = `<p class="error">অনুগ্রহ করে একটি লিংক দিন।</p>`;
-        return;
-    }
+    // ড্রপডাউন পরিবর্তনের জন্য ইভেন্ট লিসেনার
+    expirationUnit.addEventListener('change', () => {
+        const unit = expirationUnit.value;
+        expirationInputs.innerHTML = ''; // আগের ইনপুট মুছে দিন
 
-    // fetch করার আগে যোগ করুন
-const unit = expirationUnit.value;
-const valueInput = document.getElementById('expirationValue');
-let expiration = null;
-
-if (unit !== 'permanent' && valueInput && valueInput.value) {
-    expiration = {
-        unit: unit,
-        value: valueInput.value
-    };
-}
-
-// এখন body অংশটি আপডেট করুন
-const body = {
-    longUrl: longUrl,
-    customName: customName,
-    expiration: expiration // <-- নতুন তথ্য যোগ করা হলো
-};
-// --- এই try-catch ব্লকটি সম্পূর্ণ রিপ্লেস করুন ---
-try {
-    const response = await fetch(backendApiUrl, {
-        method: 'POST',
-        headers: {
-            'Content-Type': 'application/json',
-        },
-        body: JSON.stringify(body)({
-            longUrl: longUrl,
-            customName: customName
-        })
+        if (unit === 'hours') {
+            expirationInputs.innerHTML = '<input type="number" id="expirationValue" placeholder="Enter Hours (e.g., 1-24)">';
+        } else if (unit === 'date') {
+            expirationInputs.innerHTML = '<input type="date" id="expirationValue">';
+        }
     });
 
-    const data = await response.json();
+    // জেনারেট বাটনে ক্লিক করার জন্য ইভেন্ট লিসেনার
+    generateBtn.addEventListener('click', async () => {
+        const longUrl = longUrlInput.value;
+        const customName = customNameInput.value;
 
-    // --- পরিবর্তন শুরু ---
-    const resultContainer = document.getElementById('result');
-    const errorDisplay = document.querySelector('.result-container p');
-    const shortUrlInput = document.getElementById('shortUrlInput');
-    const copyBtn = document.getElementById('copyBtn');
+        if (!longUrl) {
+            alert('অনুগ্রহ করে একটি লিংক দিন।');
+            return;
+        }
 
-    if (response.ok) {
-        // সফল হলে রেজাল্ট বক্স দেখান
-        errorDisplay.textContent = 'আপনার শর্ট লিঙ্ক তৈরি হয়েছে:';
-        errorDisplay.style.color = '#ccc';
-        shortUrlInput.value = data.shortUrl;
-        resultContainer.style.display = 'block';
+        // এক্সপায়ারেশন তথ্য সংগ্রহ করা
+        const unit = expirationUnit.value;
+        const valueInput = document.getElementById('expirationValue');
+        let expiration = null;
 
-        // কপি বাটনে ইভেন্ট লিসেনার যোগ করা
-        copyBtn.onclick = () => {
-            navigator.clipboard.writeText(shortUrlInput.value).then(() => {
-                // সফলভাবে কপি হলে
-                const originalIcon = copyBtn.innerHTML;
-                copyBtn.innerHTML = 'কপি হয়েছে!';
-                copyBtn.classList.add('copied');
+        if (unit !== 'permanent' && valueInput && valueInput.value) {
+            expiration = {
+                unit: unit,
+                value: valueInput.value
+            };
+        }
 
-                setTimeout(() => {
-                    copyBtn.innerHTML = originalIcon;
-                    copyBtn.classList.remove('copied');
-                }, 2000); // ২ সেকেন্ড পর আগের অবস্থায় ফিরে আসবে
-            });
+        // API-তে পাঠানোর জন্য সঠিক বডি তৈরি করা
+        const requestBody = {
+            longUrl: longUrl,
+            customName: customName,
+            expiration: expiration
         };
 
-    } else {
-        // এরর হলে এরর মেসেজ দেখান
-        errorDisplay.textContent = data.message || 'কিছু একটা সমস্যা হয়েছে';
-        errorDisplay.style.color = '#e74c3c'; // লাল রঙ
-        document.querySelector('.result-box').style.display = 'none'; // ইনপুট বক্স লুকিয়ে ফেলুন
-        resultContainer.style.display = 'block';
-    }
-    // --- পরিবর্তন শেষ ---
+        try {
+            const response = await fetch(backendApiUrl, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                // ---> এখানে ভুলটি ঠিক করা হয়েছে <---
+                body: JSON.stringify(requestBody)
+            });
 
-} catch (error) {
-    // --- এই অংশটিও আপডেট করুন ---
-    const resultContainer = document.getElementById('result');
-    const errorDisplay = document.querySelector('.result-container p');
-    errorDisplay.textContent = 'সার্ভারের সাথে সংযোগ করা যাচ্ছে না।';
-    errorDisplay.style.color = '#e74c3c';
-    document.querySelector('.result-box').style.display = 'none';
-    resultContainer.style.display = 'block';
-}
+            const data = await response.json();
+
+            // রেজাল্ট দেখানোর জন্য এলিমেন্টগুলো সিলেক্ট করা
+            const resultParagraph = resultContainer.querySelector('p');
+            const resultBox = resultContainer.querySelector('.result-box');
+            const shortUrlInput = document.getElementById('shortUrlInput');
+
+            if (response.ok) {
+                // সফল হলে রেজাল্ট বক্স দেখানো
+                resultParagraph.textContent = 'আপনার শর্ট লিঙ্ক তৈরি হয়েছে:';
+                resultParagraph.style.color = '#ccc';
+                shortUrlInput.value = data.shortUrl;
+                resultBox.style.display = 'flex';
+                resultContainer.style.display = 'block';
+
+                const copyBtn = document.getElementById('copyBtn');
+                copyBtn.onclick = () => {
+                    navigator.clipboard.writeText(shortUrlInput.value).then(() => {
+                        const originalIcon = copyBtn.innerHTML;
+                        copyBtn.textContent = 'কপি হয়েছে!';
+                        copyBtn.classList.add('copied');
+                        setTimeout(() => {
+                            copyBtn.innerHTML = originalIcon;
+                            copyBtn.classList.remove('copied');
+                        }, 2000);
+                    });
+                };
+            } else {
+                // সার্ভার থেকে এরর আসলে সেটি দেখানো
+                resultParagraph.textContent = data.message || 'কিছু একটা সমস্যা হয়েছে';
+                resultParagraph.style.color = '#e74c3c';
+                resultBox.style.display = 'none';
+                resultContainer.style.display = 'block';
+            }
+        } catch (error) {
+            // নেটওয়ার্ক বা অন্য কোনো কারণে সার্ভারে সংযোগ করতে না পারলে এই বার্তা দেখানো
+            const resultParagraph = resultContainer.querySelector('p');
+            const resultBox = resultContainer.querySelector('.result-box');
+            resultParagraph.textContent = 'সার্ভারের সাথে সংযোগ করা যাচ্ছে না।';
+            resultParagraph.style.color = '#e74c3c';
+            resultBox.style.display = 'none';
+            resultContainer.style.display = 'block';
+        }
+    });
 });
