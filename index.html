@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Devil X URL Shortener</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+</head>
+<body>
+    <div class="container">
+        <h1><span>DEVIL-X </span>URL SHORTENER</h1>
+        <!-- প্রথমে Font Awesome লাইব্রেরি আপনার প্রজেক্টে যুক্ত করতে হবে।
+     এই লাইনটি আপনার HTML ফাইলের <head> ট্যাগের ভেতরে যুক্ত করুন। -->
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+
+
+<!-- এবার আগের লেখার জায়গায় নিচের কোডটি বসান -->
+<div class="social-icons">
+  <a href="https://www.facebook.com/AnonymousCyberTeamOfficial" target="_blank" title="ফেসবুক">
+    <i class="fab fa-facebook"></i>
+  </a>
+  <a href="https://github.com/Anonymous-Cyber-Team" target="_blank" title="গিটহাব">
+    <i class="fab fa-github"></i>
+  </a>
+  <a href="https://www.instagram.com/shamim.vaiya/" target="_blank" title="ইনস্টাগ্রাম">
+    <i class="fab fa-instagram"></i>
+  </a>
+  <a href="https://www.tiktok.com/@iam_badboy_360" target="_blank" title="টিকটক">
+    <i class="fab fa-tiktok"></i>
+  </a>
+  <a href="https://wa.me/+8801540580575" target="_blank" title=" হোয়াটসঅ্যাপ">
+    <i class="fab fa-whatsapp"></i>
+  </a>
+</div>
+
+        <div class="form">
+            <input type="url" id="longUrl" placeholder="Enter Your Link Here..." required>
+            <input type="text" id="customName" placeholder="Custom Name (Optional)">
+            <!-- index.html এ যোগ করুন -->
+<div class="expiration-options">
+    <select id="expirationUnit">
+        <option value="permanent"> Permanent link</option>
+        <option value="hours">Expire On Hours </option>
+        <option value="date"> Expire On Date</option>
+    </select>
+    <div id="expirationInputs">
+        <!-- ইনপুট এখানে ডায়নামিকভাবে আসবে -->
+    </div>
+</div>
+            <button id="generateBtn">জেনারেট করুন</button>
+        </div>
+
+        <!-- পরিবর্তন শুরু -->
+<div id="result" class="result-container" style="display: none;">
+    <p>আপনার শর্ট লিঙ্ক তৈরি হয়েছে:</p>
+    <div class="result-box">
+        <input type="text" id="shortUrlInput" readonly>
+        <button id="copyBtn">
+            <svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 0 24 24" width="24px" fill="#fff"><path d="M0 0h24v24H0V0z" fill="none"/><path d="M16 1H4c-1.1 0-2 .9-2 2v14h2V3h12V1zm3 4H8c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h11c1.1 0 2-.9 2-2V7c0-1.1-.9-2-2-2zm0 16H8V7h11v14z"/></svg>
+        </button>
+    </div>
+</div>
+<!-- পরিবর্তন শেষ -->
+    </div>
+    <script src="script.js"></script>
+</body>
+</html>

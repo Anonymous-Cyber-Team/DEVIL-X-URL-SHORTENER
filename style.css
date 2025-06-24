@@ -1,0 +1,289 @@
+/* --- CSS Custom Property-কে অ্যানিমেশনের জন্য রেজিস্টার করা --- */
+@property --border-angle {
+  syntax: "<angle>";
+  inherits: true;
+  initial-value: 0turn;
+}
+
+/* --- বেসিক স্টাইল এবং ব্যাকগ্রাউন্ড --- */
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+/* --- এই অংশটি পরিবর্তন করা হয়েছে --- */
+body {
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+    min-height: 100vh;
+    background: #223; /* আপনার দেওয়া ব্যাকগ্রাউন্ড রঙ */
+
+    /* Grid এর পরিবর্তে Flexbox ব্যবহার করে সেন্টারিং */
+    display: flex;
+    align-items: center; /* উলম্বভাবে মাঝখানে আনার জন্য */
+    justify-content: center; /* আনুভূমিকভাবে মাঝখানে আনার জন্য */
+}
+
+/* --- মূল কন্টেইনারে আপনার দেওয়া অ্যানিমেশন প্রয়োগ --- */
+.container {
+    width: 90%;
+    max-width: 500px;
+    padding: 40px;
+    color: white;
+    text-shadow: 0 1px 0 #000;
+    text-align: center;
+
+    /* --- আপনার দেওয়া কোড থেকে অ্যানিমেশনের ভ্যারিয়েবল --- */
+    --border-angle: 0turn;
+    --main-bg: conic-gradient(
+        from var(--border-angle),
+        #213,
+        #112 5%,
+        #112 60%,
+        #213 95%
+    );
+
+    border: solid 5px transparent;
+    border-radius: 2em;
+    --gradient-border: conic-gradient(from var(--border-angle), transparent 25%, #08f, #f03 99%, transparent);
+
+    /* --- মাল্টি-লেয়ার ব্যাকগ্রাউন্ডের মূল কৌশল --- */
+    background:
+      var(--main-bg) padding-box,
+      var(--gradient-border) border-box,
+      var(--main-bg) border-box;
+
+    background-position: center center;
+
+    animation: bg-spin 3s linear infinite;
+}
+
+/* অ্যানিমেশনের কীফ্রেম */
+@keyframes bg-spin {
+    to {
+        --border-angle: 1turn;
+    }
+}
+
+/* হোভার করলে অ্যানিমেশন থেমে যাবে */
+.container:hover {
+    animation-play-state: paused;
+}
+
+
+/* --- ভেতরের লেখা ও ফর্মের স্টাইল --- */
+.container h1 {
+    margin-bottom: 15px;
+    font-size: 2em;
+    font-weight: 600;
+}
+
+.container h1 span {
+    color: #08f; /* বর্ডারের নীল রঙের সাথে মেলানো */
+}
+
+.container p {
+    color: #ccc;
+    margin-bottom: 35px;
+}
+
+.container .form input {
+    width: 100%;
+    padding: 15px;
+    margin-bottom: 20px;
+    background: #112;
+    border: 1px solid #444;
+    border-radius: 8px;
+    outline: none;
+    color: #fff;
+    font-size: 16px;
+    transition: all 0.3s ease;
+}
+
+.container .form input::placeholder {
+    color: #888;
+}
+
+.container .form input:focus {
+    border-color: #08f;
+    box-shadow: 0 0 0 3px rgba(0, 136, 255, 0.3);
+}
+
+/* --- বাটন --- */
+#generateBtn {
+    width: 100%;
+    padding: 15px 30px;
+    color: #fff;
+    background: linear-gradient(45deg, #f03, #08f); /* বর্ডারের রঙের সাথে মেলানো */
+    font-size: 18px;
+    font-weight: 600;
+    transition: all 0.3s ease;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+}
+
+#generateBtn:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 8px 20px rgba(255, 0, 51, 0.3);
+}
+
+/* --- ফলাফল দেখানোর জন্য স্টাইল --- */
+#result {
+    margin-top: 30px;
+    font-size: 16px;
+}
+
+#result p {
+    margin-bottom: 10px;
+}
+
+#result a {
+    color: #08f;
+    text-decoration: none;
+    font-weight: bold;
+    word-break: break-all;
+}
+
+#result a:hover {
+    text-decoration: underline;
+}
+
+#result .error {
+    color: #e74c3c;
+    font-weight: bold;
+}
+
+/* --- ফলাফল দেখানোর জন্য নতুন স্টাইল --- */
+.result-container {
+    margin-top: 30px;
+    width: 100%;
+    text-align: left;
+}
+
+.result-container p {
+    margin-bottom: 10px;
+    font-size: 16px;
+    color: #ccc;
+}
+
+.result-box {
+    display: flex;
+    align-items: center;
+    background: #112;
+    border: 1px solid #444;
+    border-radius: 8px;
+    padding: 5px 5px 5px 15px;
+}
+
+.result-box input {
+    flex-grow: 1;
+    background: transparent;
+    border: none;
+    outline: none;
+    color: #fff;
+    font-size: 16px;
+    font-family: monospace; /* লিঙ্কটি দেখতে সুন্দর লাগবে */
+}
+
+#copyBtn {
+    background: #08f;
+    border: none;
+    border-radius: 6px;
+    padding: 8px 12px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: background-color 0.3s ease;
+}
+
+#copyBtn:hover {
+    background: #0072d6;
+}
+
+#copyBtn.copied {
+    background: #28a745; /* সবুজ রঙ */
+}
+
+.social-icons {
+  display: flex; /* আইকনগুলোকে এক লাইনে আনার জন্য */
+  justify-content: center; /* আইকনগুলোকে মাঝখানে আনার জন্য */
+  align-items: center; /* উল্লম্বভাবে মাঝখানে আনার জন্য */
+  gap: 25px; /* প্রতিটি আইকনের মধ্যে ফাঁকা জায়গা তৈরি করার জন্য */
+  margin-top: 15px; /* উপরের লেখা থেকে কিছুটা নিচে নামানোর জন্য */
+  margin-bottom: 25px; /* নিচের ইনপুট বক্স থেকে কিছুটা উপরে রাখার জন্য */
+}
+
+.social-icons a {
+  color: #ffffff; /* আইকনের রঙ সাদা করার জন্য */
+  font-size: 24px; /* আইকনের সাইজ বড় করার জন্য */
+  text-decoration: none; /* লিংকের নিচের আন্ডারলাইন সরানোর জন্য */
+  transition: transform 0.3s ease, color 0.3s ease; /* হোভার ইফেক্টের জন্য */
+}
+
+/* মাউস হোভার করলে আইকনগুলো একটু বড় হবে এবং রঙ পরিবর্তন হবে */
+.social-icons a:hover {
+  color: #00aaff; /* হোভার করলে রঙ পরিবর্তন হবে */
+  transform: scale(1.2); /* হোভার করলে আইকন একটু বড় হবে */
+}
+
+/* --- এক্সপায়ারেশন অপশনের জন্য নতুন স্টাইল --- */
+.expiration-options {
+    width: 100%;
+    margin-bottom: 20px; /* 'জেনারেট করুন' বাটন থেকে একটু দূরত্ব তৈরি */
+}
+
+/*
+  এই স্টাইলটি ড্রপডাউন (select) এবং পরবর্তীতে তৈরি হওয়া
+  ঘন্টা/তারিখের ইনপুট বক্স, উভয়ের জন্যই কাজ করবে।
+*/
+.expiration-options select,
+#expirationInputs input {
+    width: 100%;
+    padding: 15px;
+    margin-top: 5px; /* উপরের অপশন থেকে সামান্য দূরত্ব */
+
+    /* আপনার মূল ইনপুট বক্সের ডিজাইন */
+    background: #112;
+    border: 1px solid #444;
+    border-radius: 8px;
+    outline: none;
+    color: #fff;
+    font-size: 16px;
+    font-family: inherit; /* মূল ফন্ট ব্যবহার করবে */
+    transition: all 0.3s ease;
+
+    /* ব্রাউজারের ডিফল্ট ডিজাইন মুছে ফেলার জন্য */
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    appearance: none;
+
+    cursor: pointer;
+}
+
+/* ফোকাস করলে নীল রঙের বর্ডার দেখাবে */
+.expiration-options select:focus,
+#expirationInputs input:focus {
+    border-color: #08f;
+    box-shadow: 0 0 0 3px rgba(0, 136, 255, 0.3);
+}
+
+/* ড্রপডাউন মেনুর জন্য কাস্টম তীর চিহ্ন যোগ করা */
+.expiration-options select {
+    background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16' fill='%23ffffff'%3e%3cpath d='M8 11.4l-6-6 1.4-1.4L8 8.6l4.6-4.6L14 5.4z'/%3e%3c/svg%3e");
+    background-repeat: no-repeat;
+    background-position: right 15px center;
+    background-size: 1em;
+    padding-right: 40px; /* তীর চিহ্নের জন্য জায়গা তৈরি */
+}
+
+/* তারিখ ইনপুটের ক্যালেন্ডার আইকনটিকে ডার্ক থিমের জন্য সাদা করা */
+#expirationInputs input[type="date"] {
+    color-scheme: dark;
+}
+
+/* ঘন্টা ইনপুটের placeholder-এর স্টাইল */
+#expirationInputs input::placeholder {
+    color: #888;
+}
